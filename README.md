@@ -68,7 +68,7 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 <dl>
 	<dd>
 	<ul>
-		<li>Allow dependent variables to be within subdocuments of oFuncArgs.</li>
+		<li>Allow independent variables to be within subdocuments of oFuncArgs.</li>
 	</ul>
 </dl>
 
