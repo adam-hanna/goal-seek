@@ -54,7 +54,7 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 
 	console.log(goalSeek(fx1, {x:2, a:4, b:5}, "x", 140, 0.01, 1000));
 	console.log(goalSeek(fx2, {"someThing.x":2, "someThing.a":4, "anotherThing.b":5}, "someThing.x", 140, 0.01, 1000));
-	console.log(goalSeek(fx3, oFuncArgs2, sFuncArgsTarget3, 140, 0.01, 1000));
+	console.log(goalSeek(fx3, oFuncArgs3, sFuncArgsTarget3, 140, 0.01, 1000));
 </script>
 
 <!--Will Return-->
