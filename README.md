@@ -2,7 +2,7 @@
 
 goalSeek.js is a javascript library that can be used to solve for an independent variable of a function ("x") such that f(x) equals some defined goal. In other words: do you know the output of a function but not the input to yield such an output? If so, then use this goal seek!
 
-The function in question must use an object as the only input to the function. The object can contain many keys and subdocuments; however, currently, the dependent variable must not be in a subdocument! This will be fixed in a future release.
+The function in question must use an object as the only input to the function. The object can contain many keys and subdocuments; however, currently, the independent variable must not be in a subdocument! This will be fixed in a future release.
 
 Currently, this goal seek uses Steffensen's Method to find the root of the error. 
 See: http://en.wikipedia.org/wiki/Steffensen%27s_method
