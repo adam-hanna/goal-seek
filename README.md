@@ -19,6 +19,8 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
     <li><b>Tol</b>: [OPTIONAL] the magnitude of the tolerance for an acceptable output. e.g. if the desired output is 100, a 0.1 tolerance would accept any output within the inclusive range {99.9: 100.1}. The fefault if not argument is given is the magnitude of 0.1% of the goal.</li>
     <li><b>maxIter</b>: [OPTIONAL] the maximum of iterations to perform. The default if no argument is given is 1,000 iterations.</li>
   </ul>
+  <dd><h6>Return</h6>
+  <dd>The function will return the value of the independent variable such that the function is within the tolerance of the goal, or it will return null if no such value was found within the maximum allowed number of iterations. 
 </dl>
 
 ## Examples:

@@ -27,6 +27,6 @@ function goalSeek(Func, oFuncArgs, sFuncArgsTarget, Goal, Tol, maxIter) {
 
 	};
 	if (Math.abs(Y) > Tol) {
-		return "Err";
+		return null;
 	};
 };
