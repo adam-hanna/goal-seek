@@ -36,8 +36,8 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 		return i * o.a * o.b.b1;
 	};
 
-	console.log(goalSeek(fx1, [4, 5, 3], {Position: 2}, 140, 0.01, 2));
-	console.log(goalSeek(fx2, [4, {a: 5, b: {b1: 3}}], {Position: 1, propStr: "b.b1"}, 140, 0.01, 2));
+	console.log(goalSeek(fx1, [4, 5, 3], {Position: 2}, 140, 0.01, 1000));
+	console.log(goalSeek(fx2, [4, {a: 5, b: {b1: 3}}], {Position: 1, propStr: "b.b1"}, 140, 0.01, 1000));
 </script>
 
 <!--Will Return-->
@@ -51,7 +51,7 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 	<dd>
 	<ul>
 		<li>Allow for independent variables to be sought within arrays.</li>
-		<li>Simplify code</li>
+		<li>Simplify code.</li>
 	</ul>
 </dl>
 

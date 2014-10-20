@@ -1,7 +1,7 @@
 function goalSeek(Func, aFuncParams, oFuncArgTarget, Goal, Tol, maxIter) {
 	var g, Y, Y1, OldTarget;
 
-	Tol = (Tol || 0.01 * Goal);
+	Tol = (Tol || 0.001 * Goal);
 	maxIter = (maxIter || 1000);
 
 	//is the independent variable within an object?
