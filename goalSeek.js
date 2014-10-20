@@ -12,7 +12,7 @@ function goalSeek(Func, aFuncParams, oFuncArgTarget, Goal, Tol, maxIter) {
 			Y = Func.apply(null, aFuncParams) - Goal;
 			
 			//was our initial guess a good one?
-			if (Math.abs(Y) < Tol) {
+			if (Math.abs(Y) <= Tol) {
 				return getObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr);
 			} else {
 				OldTarget = getObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr);
@@ -38,7 +38,7 @@ function goalSeek(Func, aFuncParams, oFuncArgTarget, Goal, Tol, maxIter) {
 			Y = Func.apply(null, aFuncParams) - Goal;
 			
 			//was our initial guess a good one?
-			if (Math.abs(Y) < Tol) {
+			if (Math.abs(Y) <= Tol) {
 				return aFuncParams[oFuncArgTarget.Position];
 			} else {
 				OldTarget = aFuncParams[oFuncArgTarget.Position];
