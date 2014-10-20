@@ -1,26 +1,26 @@
 # goalSeek.js
 
-goalSeek.js is a javascript library that can be used to solve for an independent variable of a function ("x") such that f(x) equals some defined goal. In other words: do you know the output of a function but not the input to yield such an output? If so, then use this goal seek!
-
-The function in question must use an object as the only input to the function. The object can contain many keys and subdocuments; however, currently, the independent variable must not be in a subdocument! This will be fixed in a future release.
+goalSeek.js is a javascript library that can be used to solve for the value of an independent variable of a function ("x") such that f(x) equals some defined goal. In other words: do you know the output of a function but not the input to yield such an output? If so, then use this goal seek!
 
 Currently, this goal seek uses Steffensen's Method to find the root of the error. 
 See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 
 ## Functions:
 <dl>
-  <dt><h3>goalSeek(Func, oFuncArgs, sFuncArgsTarget, Goal, Tol, maxIter)</h3>
+  <dt><h3>1. goalSeek(Func, aFuncParams, oFuncArgTarget, Goal, Tol, maxIter)</h3>
   <dd><h6>Arguments</h6>
   <ul>
     <li><b>Func</b>: the name of the function in question.</li>
-    <li><b>oFuncArgs</b>: the object that is used as the unput to Func. Please note that the this object must contain a guess for the independent variable in question.</li>
-    <li><b>sFuncArgsTarget</b>: the key within oFuncArgs that is to be sought. This input must be a string.</li>
+    <li><b>aFuncParams</b>: the parameters that are used as the unput to Func. This must be an array. The array can include all kinds of javascript data types (e.g. integers, arrays, objects, etc.). Please note that the this array must contain a guess for the independent variable in question.</li>
+    <li><b>oFuncArgTarget {Position: integer, propStr: string}</b>: an object to locate the independent variable within aFuncParams which is to be sought. Position is the position of the independent variable within the parameters array. propStr is only needed for independent variables that are within objects, otherwise it can be omitted. It is the location of the independent variable's key in dot notation.</li>
     <li><b>Goal</b>: the desired output of the function.</li>
-    <li><b>Tol</b>: [OPTIONAL] the magnitude of the tolerance for an acceptable output. e.g. if the desired output is 100, a 0.1 tolerance would accept any output within the inclusive range {99.9: 100.1}. The default if not argument is given is the magnitude of 0.1% of the goal.</li>
+    <li><b>Tol</b>: [OPTIONAL] the magnitude of the tolerance for an acceptable output. e.g. if the desired output is 100, a 0.1 tolerance would accept any output within the inclusive range {99.9: 100.1}. The default if no argument is given is the magnitude of 0.1% of the goal.</li>
     <li><b>maxIter</b>: [OPTIONAL] the maximum number of iterations to perform. The default if no argument is given is 1,000 iterations.</li>
   </ul>
   <dd><h6>Return</h6>
   <dd>The function will return the value of the independent variable such that the function is within the tolerance of the goal, or it will return null if no such value was found within the maximum allowed number of iterations. 
+  <dt><h3>2. Support functions</h3>
+  <dd>There are two support functions within this library which help in getting and setting values within objects. They are setObjVal(Obj, propStr, Value) and getObjVal(Obj, propStr).
 </dl>
 
 ## Examples:
@@ -28,33 +28,16 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 ```html
 <!--HTML-->
 <script>
-	function fx1(o) {
-		return o.x * o.a * o.b;
+	function fx1(i1, i2, i3) {
+		return i1 * i2 * i3;
 	};
 
-	function fx2(o) {
-		return o["someThing.x"] * o["someThing.a"] * o["anotherThing.b"];
+	function fx2(i, o) {
+		return i * o.a * o.b.b1;
 	};
 
-	function fx3(o) {
-		return o.x * o.someThing.a * o.anotherThing.b;
-	};
-
-	var oFuncArgs3 = {
-		x: 2,
-		someThing: {
-			a:4
-		},
-		anotherThing: {
-			b: 5
-		}
-	};
-
-	var sFuncArgsTarget3 = "x";
-
-	console.log(goalSeek(fx1, {x:2, a:4, b:5}, "x", 140, 0.01, 1000));
-	console.log(goalSeek(fx2, {"someThing.x":2, "someThing.a":4, "anotherThing.b":5}, "someThing.x", 140, 0.01, 1000));
-	console.log(goalSeek(fx3, oFuncArgs3, sFuncArgsTarget3, 140, 0.01, 1000));
+	console.log(goalSeek(fx1, [4, 5, 3], {Position: 2}, 140, 0.01, 2));
+	console.log(goalSeek(fx2, [4, {a: 5, b: {b1: 3}}], {Position: 1, propStr: "b.b1"}, 140, 0.01, 2));
 </script>
 
 <!--Will Return-->
@@ -62,18 +45,18 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 
 =>7
 
-=>7
 ```
 ## Todo:
 <dl>
 	<dd>
 	<ul>
-		<li>Allow independent variables to be within subdocuments of oFuncArgs.</li>
+		<li>Allow for independent variables to be sought within arrays.</li>
+		<li>Simplify code</li>
 	</ul>
 </dl>
 
 ## Licenses:
-<dl><dd>This work is licensed under the (included) MIT license.
+<dl><dd>This work is licensed under the (included) MIT license. Other works that have been included in this work have been properly identified and attributed. Licenses for these works have also been included in the licenses folder within the "deps" subfolder.
 </dl>
 
 ```
