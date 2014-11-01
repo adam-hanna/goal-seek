@@ -7,11 +7,12 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 
 ## Functions:
 <dl>
-  <dt><h3>1. goalSeek(Func, aFuncParams, oFuncArgTarget, Goal, Tol, maxIter)</h3>
-  <dd><h6>Arguments</h6>
+  <dt><h3>1. goalSeek(paramatersObject)</h3>
+  <dd><h6>Parameters</h6>
   <ul>
     <li><b>Func</b>: the name of the function in question.</li>
-    <li><b>aFuncParams</b>: the parameters that are used as the unput to Func. This must be an array, note from the examples that the input to the function does not need to be an array, only here does it need to be in array form! The array can include all kinds of javascript data types (e.g. integers, arrays, objects, etc.). Please note that the this array must contain a guess for the independent variable in question.</li>
+    <li><b>This</b>: [SITUATIONAL] define a "this" object which can be used within the function. Omit this if your function does not need to reference "this" (e.g. this.a + b).</li>
+    <li><b>aFuncParams</b>: the parameters that are used as the unput to Func. This must be an array. If you do not want to provide an intial guess, just pass "null", or any other falsy type, for your independent variable in question.</li>
     <li><b>oFuncArgTarget {Position: integer, propStr: string}</b>: an object to locate the independent variable within aFuncParams which is to be sought. Position is the position of the independent variable within the parameters array. propStr is only needed for independent variables that are within objects, otherwise it can be omitted. It is the location of the independent variable's key in dot notation.</li>
     <li><b>Goal</b>: the desired output of the function.</li>
     <li><b>Tol</b>: [OPTIONAL] the magnitude of the tolerance for an acceptable output. e.g. if the desired output is 100, a 0.1 tolerance would accept any output within the inclusive range {99.9: 100.1}. The default if no argument is given is the magnitude of 0.1% of the goal.</li>
@@ -28,19 +29,69 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 ```html
 <!--HTML-->
 <script>
+  //generic example
 	function fx1(i1, i2, i3) {
 		return i1 * i2 * i3;
 	};
 
+  //example with an object input
 	function fx2(i, o) {
 		return i * o.a * o.b.b1;
 	};
 
-	console.log(goalSeek(fx1, [4, 5, 3], {Position: 2}, 140, 0.01, 1000));
-	console.log(goalSeek(fx2, [4, {a: 5, b: {b1: 3}}], {Position: 1, propStr: "b.b1"}, 140, 0.01, 1000));
+  //example with the use of "this"
+  function oTest(a) {
+    this.a = a
+  };
+
+  oTest.prototype.bar = function(b) {
+    return this.a + b;
+  };
+
+  var foo = new oTest(1);
+
+
+
+	console.log(goalSeek({
+    Func: fx1, 
+    aFuncParams: [4, 5, 6],
+    oFuncArgTarget: {
+      Position: 2
+    },
+    Goal: 140,
+    Tol: 0.01,
+    maxIter: 1000
+  }));
+
+  //example for no guess provided
+	console.log(goalSeek({
+    Func: fx2, 
+    aFuncParams: [4, {a: 5, b: {b1: null}}],
+    oFuncArgTarget: {
+      Position: 1,
+      propStr: "b.b1"
+    },
+    Goal: 140,
+    Tol: 0.01,
+    maxIter: 1000
+  }));
+
+  console.log(goalSeek({
+    Func: foo.bar,
+    This: foo,
+    aFuncParams: [3],
+    oFuncArgTarget: {
+      Position: 0
+    },
+    Goal: 8,
+    Tol: 0.01,
+    maxIter: 1000
+  }));
 </script>
 
 <!--Will Return-->
+=>7
+
 =>7
 
 =>7
@@ -51,6 +102,7 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 	<dd>
 	<ul>
 		<li>Allow for independent variables to be sought within arrays.</li>
+    <li>Error handling.</li>
 		<li>Simplify code.</li>
 	</ul>
 </dl>

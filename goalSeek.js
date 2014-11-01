@@ -1,60 +1,91 @@
-function goalSeek(Func, aFuncParams, oFuncArgTarget, Goal, Tol, maxIter) {
+function goalSeek(oParams) {
 	var g, Y, Y1, OldTarget;
 
-	Tol = (Tol || 0.001 * Goal);
-	maxIter = (maxIter || 1000);
+	oParams.Tol = (oParams.Tol || 0.001 * Goal);
+	oParams.maxIter = (oParams.maxIter || 1000);
 
 	//is the independent variable within an object?
-	if (oFuncArgTarget.propStr) {
+	if (oParams.oFuncArgTarget.propStr) {
+		//check if a guess has been provided
+		if (!oParams.aFuncParams[oParams.oFuncArgTarget.Position][oParams.oFuncArgTarget.propStr]) {
+			//iterate through 100 guesses, max
+			for (var i = 0; i < 100; i++) {
+				var iGuess = Math.random();
+				setObjVal(oParams.aFuncParams[oParams.oFuncArgTarget.Position], oParams.oFuncArgTarget.propStr, iGuess);
+				if (oParams.Func.apply(oParams.This, oParams.aFuncParams)) {
+					break;
+				};
+				if (i === 99) {
+					//we couldn't find any guess that worked!
+					return null;
+				};
+			};
+		};
+
 		//Iterate through the guesses
-		for (var i = 0; i < maxIter; i++) {
+		for (var i = 0; i < oParams.maxIter; i++) {
 			//define the root of the function as the error
-			Y = Func.apply(null, aFuncParams) - Goal;
+			Y = oParams.Func.apply(oParams.This, oParams.aFuncParams) - oParams.Goal;
 			
 			//was our initial guess a good one?
-			if (Math.abs(Y) <= Tol) {
-				return getObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr);
+			if (Math.abs(Y) <= oParams.Tol) {
+				return getObjVal(oParams.aFuncParams[oParams.oFuncArgTarget.Position], oParams.oFuncArgTarget.propStr);
 			} else {
-				OldTarget = getObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr);
-				setObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr, OldTarget + Y);
-				Y1 = Func.apply(null, aFuncParams) - Goal;
+				OldTarget = getObjVal(oParams.aFuncParams[oParams.oFuncArgTarget.Position], oParams.oFuncArgTarget.propStr);
+				setObjVal(oParams.aFuncParams[oParams.oFuncArgTarget.Position], oParams.oFuncArgTarget.propStr, OldTarget + Y);
+				Y1 = oParams.Func.apply(oParams.This, oParams.aFuncParams) - oParams.Goal;
 				g = (Y1 - Y) / Y;
 
 				if (g === 0) {
 					g = 0.0001;
 				};
 
-				setObjVal(aFuncParams[oFuncArgTarget.Position], oFuncArgTarget.propStr, OldTarget - Y / g);
+				setObjVal(oParams.aFuncParams[oParams.oFuncArgTarget.Position], oParams.oFuncArgTarget.propStr, OldTarget - Y / g);
 			};
 
 		};
-		if (Math.abs(Y) > Tol) {
+		if (Math.abs(Y) > oParams.Tol) {
 			return null;
 		};
 	} else {
+		//check if a guess has been provided
+		if (!oParams.aFuncParams[oParams.oFuncArgTarget.Position]) {
+			//iterate through 100 guesses, max
+			for (var i = 0; i < 100; i++) {
+				var iGuess = Math.random();
+				oParams.aFuncParams[oParams.oFuncArgTarget.Position] = iGuess;
+				if (oParams.Func.apply(oParams.This, oParams.aFuncParams)) {
+					break;
+				};
+				if (i === 99) {
+					//we couldn't find any guess that worked!
+					return null;
+				};
+			};
+		};
+
 		//Iterate through the guesses
-		for (var i = 0; i < maxIter; i++) {
+		for (var i = 0; i < oParams.maxIter; i++) {
 			//define the root of the function as the error
-			Y = Func.apply(null, aFuncParams) - Goal;
-			
+			Y = oParams.Func.apply(oParams.This, oParams.aFuncParams) - oParams.Goal;
 			//was our initial guess a good one?
-			if (Math.abs(Y) <= Tol) {
-				return aFuncParams[oFuncArgTarget.Position];
+			if (Math.abs(Y) <= oParams.Tol) {
+				return oParams.aFuncParams[oParams.oFuncArgTarget.Position];
 			} else {
-				OldTarget = aFuncParams[oFuncArgTarget.Position];
-				aFuncParams[oFuncArgTarget.Position] = OldTarget + Y;
-				Y1 = Func.apply(null, aFuncParams) - Goal;
+				OldTarget = oParams.aFuncParams[oParams.oFuncArgTarget.Position];
+				oParams.aFuncParams[oParams.oFuncArgTarget.Position] = OldTarget + Y;
+				Y1 = oParams.Func.apply(oParams.This, oParams.aFuncParams) - oParams.Goal;
 				g = (Y1 - Y) / Y;
 
 				if (g === 0) {
 					g = 0.0001;
 				};
 
-				aFuncParams[oFuncArgTarget.Position] = OldTarget - Y / g;
+				oParams.aFuncParams[oParams.oFuncArgTarget.Position] = OldTarget - Y / g;
 			};
 
 		};
-		if (Math.abs(Y) > Tol) {
+		if (Math.abs(Y) > oParams.Tol) {
 			return null;
 		};
 	};
