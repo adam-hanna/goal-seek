@@ -11,8 +11,8 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
   <dd><h6>Parameters</h6>
   <ul>
     <li><b>Func</b>: the name of the function in question.</li>
-    <li><b>This</b>: [SITUATIONAL] define a "this" object which can be used within the function. Omit this if your function does not need to reference "this" (e.g. this.a + b).</li>
-    <li><b>aFuncParams</b>: the parameters that are used as the unput to Func. This must be an array. If you do not want to provide an intial guess, just pass "null", or any other falsy type, for your independent variable in question.</li>
+    <li><b>This</b>: [SITUATIONAL] define a "this" object which can be used within the function. Omit if your function does not need to reference "this" (e.g. this.a + b).</li>
+    <li><b>aFuncParams</b>: the parameters that are used as the input to Func. This must be an array. If you do not want to provide an intial guess, just pass "null" (or any other falsy type) for your independent variable in question. If no guess is provided, a random value between 0 and 1 will be used. If no suitable initial value is found after 100 trys, the function will exit and return null.</li>
     <li><b>oFuncArgTarget {Position: integer, propStr: string}</b>: an object to locate the independent variable within aFuncParams which is to be sought. Position is the position of the independent variable within the parameters array. propStr is only needed for independent variables that are within objects, otherwise it can be omitted. It is the location of the independent variable's key in dot notation.</li>
     <li><b>Goal</b>: the desired output of the function.</li>
     <li><b>Tol</b>: [OPTIONAL] the magnitude of the tolerance for an acceptable output. e.g. if the desired output is 100, a 0.1 tolerance would accept any output within the inclusive range {99.9: 100.1}. The default if no argument is given is the magnitude of 0.1% of the goal.</li>
@@ -30,14 +30,14 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 <!--HTML-->
 <script>
   //generic example
-	function fx1(i1, i2, i3) {
-		return i1 * i2 * i3;
-	};
+  function fx1(i1, i2, i3) {
+    return i1 * i2 * i3;
+  };
 
   //example with an object input
-	function fx2(i, o) {
-		return i * o.a * o.b.b1;
-	};
+  function fx2(i, o) {
+    return i * o.a * o.b.b1;
+  };
 
   //example with the use of "this"
   function oTest(a) {
@@ -52,7 +52,7 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 
 
 
-	console.log(goalSeek({
+  console.log(goalSeek({
     Func: fx1, 
     aFuncParams: [4, 5, 6],
     oFuncArgTarget: {
@@ -64,7 +64,7 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
   }));
 
   //example for no guess provided
-	console.log(goalSeek({
+  console.log(goalSeek({
     Func: fx2, 
     aFuncParams: [4, {a: 5, b: {b1: null}}],
     oFuncArgTarget: {
