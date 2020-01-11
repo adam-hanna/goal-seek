@@ -1,0 +1,43 @@
+{
+  "name": "goal-seek",
+  "version": "1.0.0",
+  "description": "goal-seek is a javascript library that can be used to solve for the value of an independent variable: \"x\"; of a function: \"f(x)\"; such that f(x) equals some defined goal",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": ["lib/**/*"],
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare" : "npm run build",
+    "prepublishOnly" : "npm test && npm run lint",
+    "preversion" : "npm run lint",
+    "version" : "npm run format && git add -A src",
+    "postversion" : "git push && git push --tags",
+    "test": "jest --config jestconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adam-hanna/goalSeek.js.git"
+  },
+  "keywords": [
+    "goalseek",
+    "goal",
+    "seek"
+  ],
+  "author": "Adam Hanna <ahanna@alumni.mines.edu>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adam-hanna/goalSeek.js/issues"
+  },
+  "homepage": "https://github.com/adam-hanna/goalSeek.js#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.25",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.3.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.4"
+  }
+}
