@@ -5,116 +5,96 @@ goalSeek.js is a javascript library that can be used to solve for the value of a
 Currently, this goal seek uses Steffensen's Method to find the root of the error. 
 See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 
-## Functions:
-<dl>
-  <dt><h3>1. goalSeek(paramatersObject)</h3>
-  <dd><h6>Parameters</h6>
-  <ul>
-    <li><b>Func</b>: the name of the function in question.</li>
-    <li><b>This</b>: [SITUATIONAL] define a "this" object which can be used within the function (e.g. this.a + b). Omit if your function does not need to reference "this".</li>
-    <li><b>aFuncParams</b>: the parameters that are used as the input to Func. This must be an array. If you do not want to provide an intial guess, pass "null" (or any other falsy type) for your independent variable in question. If no guess is provided, a random value between 0 and 1 will be used. If no suitable initial value is found after 100 tries, the function will exit and return null.</li>
-    <li><b>oFuncArgTarget {Position: integer, propStr: [SITUATIONAL] string}</b>: an object to locate the independent variable within aFuncParams which is to be sought. Position is the position of the independent variable within the parameters array. propStr is only needed for independent variables that are within objects, otherwise it can be omitted. It is the location of the independent variable's key in dot notation.</li>
-    <li><b>Goal</b>: the desired output of the function.</li>
-    <li><b>Tol</b>: [OPTIONAL] the magnitude of the tolerance for an acceptable output. e.g. if the desired output is 100, a 0.1 tolerance would accept any output within the inclusive range {99.9: 100.1}. The default if no argument is given is the magnitude of 0.1% of the goal.</li>
-    <li><b>maxIter</b>: [OPTIONAL] the maximum number of iterations to perform. The default if no argument is given is 1,000 iterations.</li>
-  </ul>
-  <dd><h6>Return</h6>
-  <dd>The function will return the value of the independent variable such that the function is within the tolerance of the goal, or it will return null if no such value was found within the maximum allowed number of iterations. 
-  <dt><h3>2. Support functions</h3>
-  <dd>There are two support functions within this library which help in getting and setting values within objects. They are setObjVal(Obj, propStr, Value) and getObjVal(Obj, propStr).
-</dl>
+## Usage
 
-## Examples:
+The package exports one function, `goalSeek` as a default export. The function takes one object argument of the type:
+
+```typescript
+export type Params = {
+  fn: (...inputs: any[]) => number;
+  fnParams: any[];
+  percentTolerance: number;
+  maxIterations: number;
+  maxStep: number;
+  goal: number;
+  independentVariableIdx: number;
+};
+```
+
+1. `fn` - the function, "f(x)" that is being evaluated.
+2. `fnParams` - an array of parameters that are to be used as inputs to `fn`.
+3. `percentTolerance` - the acceptable error range to the stated goal. For example, if `goal: 100` and `percentTolerance: 1`, then any values in the range [99, 100] will be accepted as correct (&#177 1% of 100).
+4. `maxIterations` - the maximum number of attempts to make.
+5. `maxStep` - the maximum magnitude step size to move the independent variable `x` for the next guess.
+6. `goal` - the desired output of the `fn`.
+7. `independentVariableIdx` - the index position of the independent variable `x` in the `fnParams` array.
+
+To use the function, for example, with a simple linear equeation:
+
+```javascript
+  let x = 10;
+  const fn = (x: number): number => x + 2;
+  const fnParams = [x];
+
+  try {
+    const result = goalSeek({
+      fn,
+      fnParams,
+      percentTolerance: 0.01,
+      maxIterations: 1000,
+      maxStep: 10,
+      goal: 100,
+      independentVariableIdx: 0
+    })
   
-```html
-<!--HTML-->
-<script>
+    // result => 98
+  } catch(e) {
+
+  }
+```
+
+## Errors
+
+This library will throw one of two errors: `IsNanError` or `FailedToConvergeError`.
+
+### IsNanError
+
+`IsNanError` is thrown whenever the result of `fn` returns a value that is not a number. For example, if `fn` is `Math.log`, and the value `-1` is input `goalSeek` with throw `IsNanError`.
+
+### FailedToConvergeError
+
+`FailedToConvergeError` is thrown when no acceptable independent variable can be found. For example, if `fn` is `x * x` and goal is `-1` the library will fail to converge and throw `FailedToConvergeError`.
+
+
+## Examples
+  
+```javascript
   //generic example
-  function fx1(i1, i2, i3) {
+  const fn = (i1, i2, i3) => {
     return i1 * i2 * i3;
   };
 
-  //example with an object input
-  function fx2(i, o) {
-    return i * o.a * o.b.b1;
-  };
+  const result = goalSeek({
+    fn, 
+    fnParams: [4, 5, 6],
+    percentTolerance: 1,
+    maxItertions: 1000
+    maxStep: 10,
+    goal: 140,
+    independentVariableIdx: 2
+  });
 
-  //example with the use of "this"
-  function oTest(a) {
-    this.a = a
-  };
-
-  oTest.prototype.bar = function(b) {
-    return this.a + b;
-  };
-
-  var foo = new oTest(1);
-
-
-
-  console.log(goalSeek({
-    Func: fx1, 
-    aFuncParams: [4, 5, 6],
-    oFuncArgTarget: {
-      Position: 2
-    },
-    Goal: 140,
-    Tol: 0.01,
-    maxIter: 1000
-  }));
-
-  //example for no guess provided
-  console.log(goalSeek({
-    Func: fx2, 
-    aFuncParams: [4, {a: 5, b: {b1: null}}],
-    oFuncArgTarget: {
-      Position: 1,
-      propStr: "b.b1"
-    },
-    Goal: 140,
-    Tol: 0.01,
-    maxIter: 1000
-  }));
-
-  console.log(goalSeek({
-    Func: foo.bar,
-    This: foo,
-    aFuncParams: [3],
-    oFuncArgTarget: {
-      Position: 0
-    },
-    Goal: 8,
-    Tol: 0.01,
-    maxIter: 1000
-  }));
-</script>
-
-<!--Will Return-->
-=>7
-
-=>7
-
-=>7
-
+  // result => 7
 ```
-## Todo:
-<dl>
-	<dd>
-	<ul>
-		<li>Allow for independent variables to be sought within arrays.</li>
-    <li>Error handling.</li>
-		<li>Simplify code.</li>
-	</ul>
-</dl>
 
 ## Licenses:
-<dl><dd>This work is licensed under the (included) MIT license. Other works that have been included in this work have been properly identified and attributed. Licenses for these works have also been included in the licenses folder within the "deps" subfolder.
-</dl>
+
+This work is [licensed](LICENSE) under MIT.
 
 ```
 The MIT License (MIT)
 
-Copyright (c) 2014 Adam Hanna
+Copyright (c) 2020 Adam Hanna
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -123,14 +103,14 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 ```
