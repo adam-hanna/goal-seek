@@ -26,7 +26,7 @@ const goalSeek = ({
   let oldGuess: number;
   let newGuess: number;
 
-  const absoluteTolerance = percentTolerance * goal;
+  const absoluteTolerance = (percentTolerance / 100) * goal;
 
   // iterate through the guesses
   for (let i = 0; i < maxIterations; i++) {
