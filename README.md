@@ -10,6 +10,9 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 The package exports one function, `goalSeek` as a default export. The function takes one object argument of the type:
 
 ```typescript
+export const IsNanError = TypeError('resulted in NaN');
+export const FailedToConvergeError = Error('failed to converge');
+
 export type Params = {
   fn: (...inputs: any[]) => number;
   fnParams: any[];
@@ -19,6 +22,20 @@ export type Params = {
   goal: number;
   independentVariableIdx: number;
 };
+
+const goalSeek = ({
+  fn,
+  fnParams,
+  percentTolerance,
+  maxIterations,
+  maxStep,
+  goal,
+  independentVariableIdx,
+}: Params): number => {
+  ...
+}
+
+export default goalSeek;
 ```
 
 1. `fn` - the function, "f(x)" that is being evaluated.
