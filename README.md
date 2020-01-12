@@ -2,8 +2,7 @@
 
 goal-seek is a javascript library that can be used to solve for the value of an independent variable: "x"; of a function: "f(x)"; such that f(x) equals some defined goal. In other words: do you know the desired output of a function but not the input to yield such an output? If so, then use this goal seek!
 
-Currently, this goal seek uses Steffensen's Method to find the root of the error. 
-See: http://en.wikipedia.org/wiki/Steffensen%27s_method
+Currently, this goal seek uses [Steffensen's Method](http://en.wikipedia.org/wiki/Steffensen%27s_method) to find the root of the error. 
 
 ## Usage
 
