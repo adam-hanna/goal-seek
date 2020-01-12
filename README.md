@@ -1,15 +1,17 @@
-# goalSeek.js
+# goal-seek
 
-goalSeek.js is a javascript library that can be used to solve for the value of an independent variable: "x"; of a function: "f(x)"; such that f(x) equals some defined goal. In other words: do you know the desired output of a function but not the input to yield such an output? If so, then use this goal seek!
+goal-seek is a javascript library that can be used to solve for the value of an independent variable: "x"; of a function: "f(x)"; such that f(x) equals some defined goal. In other words: do you know the desired output of a function but not the input to yield such an output? If so, then use this goal seek!
 
-Currently, this goal seek uses Steffensen's Method to find the root of the error. 
-See: http://en.wikipedia.org/wiki/Steffensen%27s_method
+Currently, this goal seek uses [Steffensen's Method](http://en.wikipedia.org/wiki/Steffensen%27s_method) to find the root of the error. 
 
 ## Usage
 
-The package exports one function, `goalSeek` as a default export. The function takes one object argument of the type:
+The package exports two error types, the function parameter type and one function, `goalSeek` as a default export:
 
 ```typescript
+export const IsNanError = TypeError('resulted in NaN');
+export const FailedToConvergeError = Error('failed to converge');
+
 export type Params = {
   fn: (...inputs: any[]) => number;
   fnParams: any[];
@@ -19,11 +21,27 @@ export type Params = {
   goal: number;
   independentVariableIdx: number;
 };
+
+const goalSeek = ({
+  fn,
+  fnParams,
+  percentTolerance,
+  maxIterations,
+  maxStep,
+  goal,
+  independentVariableIdx,
+}: Params): number => {
+  ...
+}
+
+export default goalSeek;
 ```
+
+The `goalSeek` function takes one object argument with the following keys:
 
 1. `fn` - the function, "f(x)" that is being evaluated.
 2. `fnParams` - an array of parameters that are to be used as inputs to `fn`.
-3. `percentTolerance` - the acceptable error range to the stated goal. For example, if `goal: 100` and `percentTolerance: 1`, then any values in the range [99, 100] will be accepted as correct (&#177 1% of 100).
+3. `percentTolerance` - the acceptable error range to the stated goal. For example, if `goal: 100` and `percentTolerance: 1`, then any values in the range [99, 101] will be accepted as correct (± 1% of 100).
 4. `maxIterations` - the maximum number of attempts to make.
 5. `maxStep` - the maximum magnitude step size to move the independent variable `x` for the next guess.
 6. `goal` - the desired output of the `fn`.
@@ -40,7 +58,7 @@ To use the function, for example, with a simple linear equeation:
     const result = goalSeek({
       fn,
       fnParams,
-      percentTolerance: 0.01,
+      percentTolerance: 1,
       maxIterations: 1000,
       maxStep: 10,
       goal: 100,
@@ -69,22 +87,28 @@ This library will throw one of two errors: `IsNanError` or `FailedToConvergeErro
 ## Examples
   
 ```javascript
-  //generic example
-  const fn = (i1, i2, i3) => {
-    return i1 * i2 * i3;
-  };
+import goalSeek from 'goal-seek';
 
+const fn = (x,y,z) => x * y * z;
+const fnParams = [4,5,6];
+
+try {
   const result = goalSeek({
-    fn, 
-    fnParams: [4, 5, 6],
+    fn,
+    fnParams,
     percentTolerance: 1,
-    maxItertions: 1000
-    maxStep: 10,
+    maxIterations: 1000,
+    maxStep: 1,
     goal: 140,
     independentVariableIdx: 2
   });
 
-  // result => 7
+  console.log(`result: ${result}`);
+} catch (e) {
+  console.log('error', e);
+}
+
+// result: 7
 ```
 
 ## Licenses:
