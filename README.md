@@ -1,6 +1,6 @@
-# goalSeek.js
+# goal-seek
 
-goalSeek.js is a javascript library that can be used to solve for the value of an independent variable: "x"; of a function: "f(x)"; such that f(x) equals some defined goal. In other words: do you know the desired output of a function but not the input to yield such an output? If so, then use this goal seek!
+goal-seek is a javascript library that can be used to solve for the value of an independent variable: "x"; of a function: "f(x)"; such that f(x) equals some defined goal. In other words: do you know the desired output of a function but not the input to yield such an output? If so, then use this goal seek!
 
 Currently, this goal seek uses Steffensen's Method to find the root of the error. 
 See: http://en.wikipedia.org/wiki/Steffensen%27s_method
@@ -23,7 +23,7 @@ export type Params = {
 
 1. `fn` - the function, "f(x)" that is being evaluated.
 2. `fnParams` - an array of parameters that are to be used as inputs to `fn`.
-3. `percentTolerance` - the acceptable error range to the stated goal. For example, if `goal: 100` and `percentTolerance: 1`, then any values in the range [99, 100] will be accepted as correct (&#177 1% of 100).
+3. `percentTolerance` - the acceptable error range to the stated goal. For example, if `goal: 100` and `percentTolerance: 1`, then any values in the range [99, 101] will be accepted as correct (± 1% of 100).
 4. `maxIterations` - the maximum number of attempts to make.
 5. `maxStep` - the maximum magnitude step size to move the independent variable `x` for the next guess.
 6. `goal` - the desired output of the `fn`.
