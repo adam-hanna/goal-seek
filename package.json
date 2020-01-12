@@ -1,19 +1,23 @@
 {
   "name": "goal-seek",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "goal-seek is a javascript library that can be used to solve for the value of an independent variable: \"x\"; of a function: \"f(x)\"; such that f(x) equals some defined goal",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "files": ["lib/**/*"],
+  "files": [
+    "lib/**/*"
+  ],
   "scripts": {
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
-    "prepare" : "npm run build",
-    "prepublishOnly" : "npm test && npm run lint",
-    "preversion" : "npm run lint",
-    "version" : "npm run format && git add -A src",
-    "postversion" : "git push && git push --tags",
+    "prepare": "npm run build && npm run minify && npm run clean",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
+    "minify": "terser --compress --mangle --output lib/index.min.js -- lib/index.js",
+    "clean": "rm lib/index.js",
     "test": "jest --config jestconfig.json"
   },
   "repository": {
@@ -35,6 +39,7 @@
     "@types/jest": "^24.0.25",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
+    "terser": "^4.6.2",
     "ts-jest": "^24.3.0",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
