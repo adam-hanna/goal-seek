@@ -7,7 +7,7 @@ See: http://en.wikipedia.org/wiki/Steffensen%27s_method
 
 ## Usage
 
-The package exports one function, `goalSeek` as a default export. The function takes one object argument of the type:
+The package exports two error types, the function parameter type and one function, `goalSeek` as a default export:
 
 ```typescript
 export const IsNanError = TypeError('resulted in NaN');
