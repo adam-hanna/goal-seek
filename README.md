@@ -38,6 +38,8 @@ const goalSeek = ({
 export default goalSeek;
 ```
 
+The `goalSeek` function takes one object argument with the following keys:
+
 1. `fn` - the function, "f(x)" that is being evaluated.
 2. `fnParams` - an array of parameters that are to be used as inputs to `fn`.
 3. `percentTolerance` - the acceptable error range to the stated goal. For example, if `goal: 100` and `percentTolerance: 1`, then any values in the range [99, 101] will be accepted as correct (± 1% of 100).
