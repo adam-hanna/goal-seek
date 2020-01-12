@@ -9,7 +9,7 @@ describe('goalSeek', () => {
     const result = goalSeek({
       fn,
       fnParams,
-      percentTolerance: 0.01,
+      percentTolerance: 1,
       maxIterations: 1000,
       maxStep: 10,
       goal: 100,
@@ -27,7 +27,7 @@ describe('goalSeek', () => {
     const result = goalSeek({
       fn,
       fnParams,
-      percentTolerance: 0.01,
+      percentTolerance: 1,
       maxIterations: 1000,
       maxStep: 1,
       goal: 10000,
@@ -46,7 +46,7 @@ describe('goalSeek', () => {
       const result = goalSeek({
         fn,
         fnParams,
-        percentTolerance: 0.01,
+        percentTolerance: 1,
         maxIterations: 1000,
         maxStep: 10,
         goal: 100,
@@ -69,7 +69,7 @@ describe('goalSeek', () => {
       const result = goalSeek({
         fn,
         fnParams,
-        percentTolerance: 0.01,
+        percentTolerance: 1,
         maxIterations: 10,
         maxStep: 10,
         goal: -1,

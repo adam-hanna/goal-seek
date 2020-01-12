@@ -58,7 +58,7 @@ To use the function, for example, with a simple linear equeation:
     const result = goalSeek({
       fn,
       fnParams,
-      percentTolerance: 0.01,
+      percentTolerance: 1,
       maxIterations: 1000,
       maxStep: 10,
       goal: 100,
