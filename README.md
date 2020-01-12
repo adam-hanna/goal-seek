@@ -69,22 +69,28 @@ This library will throw one of two errors: `IsNanError` or `FailedToConvergeErro
 ## Examples
   
 ```javascript
-  //generic example
-  const fn = (i1, i2, i3) => {
-    return i1 * i2 * i3;
-  };
+import goalSeek from 'goal-seek';
 
+const fn = (x,y,z) => x * y * z;
+const fnParams = [4,5,6];
+
+try {
   const result = goalSeek({
-    fn, 
-    fnParams: [4, 5, 6],
+    fn,
+    fnParams,
     percentTolerance: 1,
-    maxItertions: 1000
-    maxStep: 10,
+    maxIterations: 1000,
+    maxStep: 1,
     goal: 140,
     independentVariableIdx: 2
   });
 
-  // result => 7
+  console.log(`result: ${result}`);
+} catch (e) {
+  console.log('error', e);
+}
+
+// result: 7
 ```
 
 ## Licenses:
