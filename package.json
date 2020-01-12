@@ -1,6 +1,6 @@
 {
   "name": "goal-seek",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "goal-seek is a javascript library that can be used to solve for the value of an independent variable: \"x\"; of a function: \"f(x)\"; such that f(x) equals some defined goal",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
