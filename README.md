@@ -4,6 +4,12 @@ goal-seek is a javascript library that can be used to solve for the value of an 
 
 Currently, this goal seek uses [Steffensen's Method](http://en.wikipedia.org/wiki/Steffensen%27s_method) to find the root of the error. 
 
+## Installation
+
+`goal-seek` is an [npm package](https://www.npmjs.com/package/goal-seek), so installation is as easy as:
+
+`$ npm install --save goal-seek`
+
 ## Usage
 
 The package exports two error types, the function parameter type and one function, `goalSeek` as a default export:
