@@ -11,11 +11,12 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
-    "prepare": "npm run build",
+    "prepare": "npm run build && npm run minify",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
+    "minify": "terser --compress --mangle --output dist/index.min.js -- lib/index.js",
     "test": "jest --config jestconfig.json"
   },
   "repository": {
@@ -37,6 +38,7 @@
     "@types/jest": "^24.0.25",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
+    "terser": "^4.6.3",
     "ts-jest": "^24.3.0",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
