@@ -17,6 +17,7 @@
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
     "minify": "terser --wrap goalSeeker --compress --mangle --output dist/index.min.js -- lib/index.js",
+    "coveralls": "jest --config jestconfig.json --coverage && cat ./coverage/lcov.info | coveralls",
     "test": "jest --config jestconfig.json"
   },
   "repository": {
@@ -36,6 +37,7 @@
   "homepage": "https://github.com/adam-hanna/goalSeek.js#readme",
   "devDependencies": {
     "@types/jest": "^24.0.25",
+    "coveralls": "^3.0.9",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
     "terser": "^4.6.3",

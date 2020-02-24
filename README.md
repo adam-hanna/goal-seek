@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/adam-hanna/goal-seek.svg?branch=develop)](https://travis-ci.com/adam-hanna/goal-seek)
+[![Coverage Status](https://coveralls.io/repos/github/adam-hanna/goal-seek/badge.svg?branch=develop)](https://coveralls.io/github/adam-hanna/goal-seek?branch=develop)
+
 # goal-seek
 
 goal-seek is a javascript library that can be used to solve for the value of an independent variable: "x"; of a function: "f(x)"; such that f(x) equals some defined goal. In other words: do you know the desired output of a function but not the input to yield such an output? If so, then use this goal seek!
