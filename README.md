@@ -15,7 +15,7 @@ Currently, this goal seek uses [Steffensen's Method](http://en.wikipedia.org/wik
 
 ## Usage
 
-The package exports two error types, the function parameter type and one function, `goalSeek` as a default export:
+The package exports three error types, the function parameter type and one function, `goalSeek` as a default export:
 
 ```typescript
 export const IsNanError = TypeError('resulted in NaN');
@@ -85,7 +85,11 @@ To use the function, for example, with a simple linear equeation:
 
 ## Errors
 
-This library will throw one of two errors: `IsNanError` or `FailedToConvergeError`.
+This library will throw one of three errors:  `InvalidInputsError`, `IsNanError` or `FailedToConvergeError`.
+
+### InvalidInputsError
+
+One of `percentTolerance` or `customToleranceFn` is required`. If one is not supplied, the `InvalidInputsError` is thrown. If both are supplied, `percentTolerance` is used.
 
 ### IsNanError
 
@@ -148,7 +152,7 @@ try {
   console.log('error', e);
 }
 
-// result: 7
+// result: 2E-5
 ```
 
 ## Licenses:
