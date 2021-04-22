@@ -20,11 +20,13 @@ The package exports two error types, the function parameter type and one functio
 ```typescript
 export const IsNanError = TypeError('resulted in NaN');
 export const FailedToConvergeError = Error('failed to converge');
+export const InvalidInputsError = Error('invalid inputs');
 
 export type Params = {
   fn: (...inputs: any[]) => number;
   fnParams: any[];
-  percentTolerance: number;
+  percentTolerance?: number;
+  customToleranceFn?: (arg0: number) => boolean;
   maxIterations: number;
   maxStep: number;
   goal: number;
@@ -50,11 +52,12 @@ The `goalSeek` function takes one object argument with the following keys:
 
 1. `fn` - the function, "f(x)" that is being evaluated.
 2. `fnParams` - an array of parameters that are to be used as inputs to `fn`.
-3. `percentTolerance` - the acceptable error range to the stated goal. For example, if `goal: 100` and `percentTolerance: 1`, then any values in the range [99, 101] will be accepted as correct (± 1% of 100).
-4. `maxIterations` - the maximum number of attempts to make.
-5. `maxStep` - the maximum magnitude step size to move the independent variable `x` for the next guess.
-6. `goal` - the desired output of the `fn`.
-7. `independentVariableIdx` - the index position of the independent variable `x` in the `fnParams` array.
+3. `percentTolerance` - the acceptable error range to the stated goal. For example, if `goal: 100` and `percentTolerance: 1`, then any values in the range [99, 101] will be accepted as correct (± 1% of 100). If used, `customToleranceFn` should be left undefined.
+4. `customToleranceFn` - a custom function that can be used to check the validity of a result. If used, `percentTolerance` should be left undefined.
+5. `maxIterations` - the maximum number of attempts to make.
+6. `maxStep` - the maximum magnitude step size to move the independent variable `x` for the next guess.
+7. `goal` - the desired output of the `fn`.
+8. `independentVariableIdx` - the index position of the independent variable `x` in the `fnParams` array.
 
 To use the function, for example, with a simple linear equeation:
 
@@ -109,6 +112,34 @@ try {
     maxIterations: 1000,
     maxStep: 1,
     goal: 140,
+    independentVariableIdx: 2
+  });
+
+  console.log(`result: ${result}`);
+} catch (e) {
+  console.log('error', e);
+}
+
+// result: 7
+```
+  
+```javascript
+import goalSeek from 'goal-seek';
+
+const fn = (x,y,z) => x * y * z;
+const fnParams = [4,5,6];
+const customToleranceFn = (x: number): boolean => {
+  return x < 1
+}
+
+try {
+  const result = goalSeek({
+    fn,
+    fnParams,
+    customToleranceFn,
+    maxIterations: 1000,
+    maxStep: 0.01,
+    goal: 0.5,
     independentVariableIdx: 2
   });
 
