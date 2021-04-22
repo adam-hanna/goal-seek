@@ -89,7 +89,7 @@ This library will throw one of three errors:  `InvalidInputsError`, `IsNanError`
 
 ### InvalidInputsError
 
-One of `percentTolerance` or `customToleranceFn` is required`. If one is not supplied, the `InvalidInputsError` is thrown. If both are supplied, `percentTolerance` is used.
+One of `percentTolerance` or `customToleranceFn` is required. If one is not supplied, the `InvalidInputsError` is thrown. If both are supplied, `percentTolerance` is used.
 
 ### IsNanError
 
